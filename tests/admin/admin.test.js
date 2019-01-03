@@ -4,6 +4,7 @@ const UserProfile = require("../../model/user_profile");
 const app = require("../../app");
 
 describe("Admin Handler", () => {
+  let server = null;
   let userID = null;
 
   beforeEach(async () => {
@@ -24,15 +25,18 @@ describe("Admin Handler", () => {
         userID = user.id;
       }
     }
+
+    server = app.listen(3000);
   });
 
   afterEach(async () => {
     await UserProfile.destroy({ where: {} });
+    server.close();
   });
 
   describe("Find users", () => {
     it("should find successfully", async () => {
-      const res = await request(app)
+      const res = await request(server)
         .get("/api/admin/users")
         .query({ offset: 0, limit: 10 });
       console.log("res.body", res.body);
@@ -44,7 +48,9 @@ describe("Admin Handler", () => {
 
   describe("Disable users", () => {
     it("should disable user successfully", async () => {
-      const res = await request(app).post("/api/admin/users/disable/" + userID);
+      const res = await request(server).post(
+        "/api/admin/users/disable/" + userID
+      );
       console.log("res.body", res.body);
       expect(res.status).toBe(200);
       expect(res.body.user).not.toBeNull();
