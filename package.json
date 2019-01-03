@@ -13,6 +13,7 @@
     "@iarna/toml": "^2.2.1",
     "bluebird": "^3.5.3",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
     "mysql2": "^1.6.4",
     "sequelize": "^4.42.0"
