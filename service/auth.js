@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const UserProfile = require("../model/user_profile");
 const CustomError = require("../error/error");
 
-const op = Sequelize.Op;
 const ROLE_USER = "user"; // 角色：一般使用者。
 
 /**
