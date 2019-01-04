@@ -13,7 +13,7 @@ describe("Admin Handler", () => {
     // 新增 5 名使用者。
     for (let i = 0; i < 5; i++) {
       const number = i + 1;
-      const user = await UserProfile.create({
+      const userProfile = await UserProfile.create({
         username: "test00" + number,
         email: "test00" + number + "@xxx.com",
         password:
@@ -22,7 +22,7 @@ describe("Admin Handler", () => {
       });
 
       if (i === 4) {
-        userID = user.id;
+        userID = userProfile.ID;
       }
     }
 

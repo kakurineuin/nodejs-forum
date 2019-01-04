@@ -42,7 +42,7 @@ describe("Auth Handler", () => {
       expect(res.body.token).not.toBeNull();
       expect(res.body.exp).toBeGreaterThan(1);
       expect(res.body.userProfile).toMatchObject({
-        id: expect.any(Number),
+        ID: expect.any(Number),
         username: "test001",
         email: "test001@xxx.com",
         password: "",
@@ -77,7 +77,7 @@ describe("Auth Handler", () => {
       expect(res.body.token).not.toBeNull();
       expect(res.body.exp).toBeGreaterThan(1);
       expect(res.body.userProfile).toMatchObject({
-        id: expect.any(Number),
+        ID: expect.any(Number),
         username: "test001",
         email: "test001@xxx.com",
         password: "",
