@@ -10,7 +10,7 @@ router.get("/users", async (req, res) => {
     parseInt(req.query.offset, 10),
     parseInt(req.query.limit, 10)
   );
-  return res.status(200).json({
+  res.status(200).json({
     users: result.rows,
     totalCount: result.count
   });
@@ -18,7 +18,7 @@ router.get("/users", async (req, res) => {
 
 router.post("/users/disable/:id", async (req, res) => {
   const userProfile = await adminService.disableUser(req.params.id);
-  return res.status(200).json({
+  res.status(200).json({
     message: "停用使用者成功。",
     user: userProfile
   });

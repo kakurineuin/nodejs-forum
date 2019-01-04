@@ -7,7 +7,7 @@ describe("Admin Handler", () => {
   let server = null;
   let userID = null;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await sequelize.sync();
 
     // 新增 5 名使用者。
@@ -29,7 +29,7 @@ describe("Admin Handler", () => {
     server = app.listen(3000);
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await UserProfile.destroy({ where: {} });
     server.close();
   });
@@ -53,7 +53,14 @@ describe("Admin Handler", () => {
       );
       console.log("res.body", res.body);
       expect(res.status).toBe(200);
-      expect(res.body.user).not.toBeNull();
+      expect(res.body.user).toMatchObject({
+        id: expect.any(Number),
+        username: "test005",
+        email: "test005@xxx.com",
+        role: "user",
+        isDisabled: 1,
+        createdAt: expect.any(String)
+      });
     });
   });
 });

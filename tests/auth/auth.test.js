@@ -1,0 +1,82 @@
+const request = require("supertest");
+const sequelize = require("../../database/database");
+const bcrypt = require("bcrypt");
+const UserProfile = require("../../model/user_profile");
+const app = require("../../app");
+
+describe("Auth Handler", () => {
+  let server = null;
+
+  beforeAll(async () => {
+    await sequelize.sync();
+    server = app.listen(3000);
+  });
+
+  afterAll(async () => {
+    await UserProfile.destroy({ where: {} });
+    server.close();
+  });
+
+  describe("Register", () => {
+    it("should register successfully", async () => {
+      const requestJSON = {
+        username: "test001",
+        email: "test001@xxx.com",
+        password: "test123"
+      };
+      const res = await request(server)
+        .post("/api/auth/register")
+        .set("Content-Type", "application/json")
+        .send(requestJSON);
+      console.log("res.body", res.body);
+      expect(res.status).toBe(200);
+      expect(res.body.token).not.toBeNull();
+      expect(res.body.exp).toBeGreaterThan(1);
+      expect(res.body.userProfile).toMatchObject({
+        id: expect.any(Number),
+        username: "test001",
+        email: "test001@xxx.com",
+        password: "",
+        role: "user",
+        isDisabled: 0,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String)
+      });
+    });
+  });
+
+  describe("Login", () => {
+    it("should login successfully", async () => {
+      await UserProfile.create({
+        username: "test001",
+        email: "test001@xxx.com",
+        password:
+          "$2a$10$041tGlbd86T90uNSGbvkw.tSExCrlKmy37QoUGl23mfW7YGJjUVjO",
+        role: "user"
+      });
+
+      const requestJSON = {
+        email: "test001@xxx.com",
+        password: "test123"
+      };
+      const res = await request(server)
+        .post("/api/auth/login")
+        .set("Content-Type", "application/json")
+        .send(requestJSON);
+      console.log("res.body", res.body);
+      expect(res.status).toBe(200);
+      expect(res.body.token).not.toBeNull();
+      expect(res.body.exp).toBeGreaterThan(1);
+      expect(res.body.userProfile).toMatchObject({
+        id: expect.any(Number),
+        username: "test001",
+        email: "test001@xxx.com",
+        password: "",
+        role: "user",
+        isDisabled: 0,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String)
+      });
+    });
+  });
+});
