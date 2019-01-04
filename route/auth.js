@@ -1,5 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const { myJoi, validate } = require("../validate/joi_options");
+const Joi = require("joi");
 const { addHours } = require("date-fns");
 const AuthService = require("../service/auth");
 
@@ -15,7 +17,32 @@ const router = express.Router();
  * 註冊。
  */
 router.post("/register", async (req, res) => {
-  // TODO: 使用 Joi 驗證參數。
+  const schema = myJoi.keys({
+    username: Joi.string()
+      .alphanum()
+      .min(5)
+      .max(20)
+      .required()
+      .label("使用者名稱"),
+    email: Joi.string()
+      .email()
+      .min(5)
+      .max(30)
+      .required()
+      .label("email"),
+    password: Joi.string()
+      .min(5)
+      .max(20)
+      .required()
+      .label("密碼")
+  });
+  const message = validate(req.body, schema);
+
+  if (message) {
+    return res.status(400).json({
+      message
+    });
+  }
 
   const userProfile = await authService.register(
     req.body.username,
@@ -30,7 +57,26 @@ router.post("/register", async (req, res) => {
  * 登入。
  */
 router.post("/login", async (req, res) => {
-  // TODO: 使用 Joi 驗證參數。
+  const schema = myJoi.keys({
+    email: Joi.string()
+      .email()
+      .min(5)
+      .max(30)
+      .required()
+      .label("email"),
+    password: Joi.string()
+      .min(5)
+      .max(20)
+      .required()
+      .label("密碼")
+  });
+  const message = validate(req.body, schema);
+
+  if (message) {
+    return res.status(400).json({
+      message
+    });
+  }
 
   const userProfile = await authService.login(
     req.body.email,

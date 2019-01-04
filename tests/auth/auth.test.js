@@ -18,6 +18,15 @@ describe("Auth Handler", () => {
   });
 
   describe("Register", () => {
+    it("should fail to register if some parameters are missing", async () => {
+      const requestJSON = {};
+      const res = await request(server)
+        .post("/api/auth/register")
+        .set("Content-Type", "application/json")
+        .send(requestJSON);
+      console.log("res.body", res.body);
+      expect(res.status).toBe(400);
+    });
     it("should register successfully", async () => {
       const requestJSON = {
         username: "test001",
