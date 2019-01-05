@@ -13,8 +13,20 @@ describe("Auth Handler", () => {
   });
 
   afterAll(async () => {
-    await UserProfile.destroy({ where: {} });
     server.close();
+  });
+
+  beforeEach(async () => {
+    await UserProfile.create({
+      username: "test001",
+      email: "test001@xxx.com",
+      password: "$2a$10$041tGlbd86T90uNSGbvkw.tSExCrlKmy37QoUGl23mfW7YGJjUVjO",
+      role: "user"
+    });
+  });
+
+  afterEach(async () => {
+    await UserProfile.destroy({ where: {} });
   });
 
   describe("Register", () => {
@@ -29,8 +41,8 @@ describe("Auth Handler", () => {
     });
     it("should register successfully", async () => {
       const requestJSON = {
-        username: "test001",
-        email: "test001@xxx.com",
+        username: "test002",
+        email: "test002@xxx.com",
         password: "test123"
       };
       const res = await request(server)
@@ -43,8 +55,8 @@ describe("Auth Handler", () => {
       expect(res.body.exp).toBeGreaterThan(1);
       expect(res.body.userProfile).toMatchObject({
         ID: expect.any(Number),
-        username: "test001",
-        email: "test001@xxx.com",
+        username: "test002",
+        email: "test002@xxx.com",
         password: "",
         role: "user",
         isDisabled: 0,
@@ -56,14 +68,6 @@ describe("Auth Handler", () => {
 
   describe("Login", () => {
     it("should login successfully", async () => {
-      await UserProfile.create({
-        username: "test001",
-        email: "test001@xxx.com",
-        password:
-          "$2a$10$041tGlbd86T90uNSGbvkw.tSExCrlKmy37QoUGl23mfW7YGJjUVjO",
-        role: "user"
-      });
-
       const requestJSON = {
         email: "test001@xxx.com",
         password: "test123"

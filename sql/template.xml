@@ -10,10 +10,10 @@
   </Sql>
   <Sql name="FindTopicsGolangStatistics">
     select
-  		(select count(*) from post_golang where reply_post_id is null) as topic_count,
-  		(select count(*) from post_golang where reply_post_id is not null) as reply_count,
-  		u.username as last_post_username,
-  		p.created_at as last_post_time
+  		(select count(*) from post_golang where reply_post_id is null) as topicCount,
+  		(select count(*) from post_golang where reply_post_id is not null) as replyCount,
+  		u.username as lastPostUsername,
+  		p.created_at as lastPostTime
   	from post_golang p
   		inner join user_profile u
   			on p.user_profile_id = u.id
@@ -22,10 +22,10 @@
   </Sql>
   <Sql name="FindTopicsNodeJSStatistics">
     select
-      (select count(*) from post_nodejs where reply_post_id is null) as topic_count,
-      (select count(*) from post_nodejs where reply_post_id is not null) as reply_count,
-      u.username as last_post_username,
-      p.created_at as last_post_time
+      (select count(*) from post_nodejs where reply_post_id is null) as topicCount,
+      (select count(*) from post_nodejs where reply_post_id is not null) as replyCount,
+      u.username as lastPostUsername,
+      p.created_at as lastPostTime
     from post_nodejs p
       inner join user_profile u
         on p.user_profile_id = u.id

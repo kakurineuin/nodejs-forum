@@ -9,7 +9,14 @@ describe("Admin Handler", () => {
 
   beforeAll(async () => {
     await sequelize.sync();
+    server = app.listen(3000);
+  });
 
+  afterAll(async () => {
+    server.close();
+  });
+
+  beforeEach(async () => {
     // 新增 5 名使用者。
     for (let i = 0; i < 5; i++) {
       const number = i + 1;
@@ -25,13 +32,10 @@ describe("Admin Handler", () => {
         userID = userProfile.ID;
       }
     }
-
-    server = app.listen(3000);
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await UserProfile.destroy({ where: {} });
-    server.close();
   });
 
   describe("Find users", () => {

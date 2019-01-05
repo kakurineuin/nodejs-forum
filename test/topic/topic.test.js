@@ -5,14 +5,21 @@ const PostGolang = require("../../model/post_golang");
 const PostNodejs = require("../../model/post_nodejs");
 const app = require("../../app");
 
-describe("Forum Handler", () => {
+describe("Topic Handler", () => {
   let userProfileID = null;
   let postGolang = null;
   let server = null;
 
   beforeAll(async () => {
     await sequelize.sync();
+    server = app.listen(3000);
+  });
 
+  afterAll(async () => {
+    server.close();
+  });
+
+  beforeEach(async () => {
     // 新增一名使用者。
     const userProfile = await UserProfile.create({
       username: "test001",
@@ -51,26 +58,47 @@ describe("Forum Handler", () => {
       topic: postNodejs.topic,
       content: "這是回覆。"
     });
-
-    server = app.listen(3000);
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await UserProfile.destroy({ where: {} });
     await PostGolang.destroy({ where: {} });
     await PostNodejs.destroy({ where: {} });
-    server.close();
   });
 
-  describe("Find forum statistics", () => {
+  describe("Find topics statistics", () => {
     it("should find successfully", async () => {
-      const res = await request(server).get("/api/forum/statistics");
+      const res = await request(server).get("/api/topics/statistics");
       console.log("res.body", res.body);
       expect(res.status).toBe(200);
-      expect(res.body.forumStatistics).toMatchObject({
-        topicCount: expect.any(Number),
-        replyCount: expect.any(Number),
-        userCount: expect.any(Number)
+
+      // Expect(result).To(MatchAllFields(Fields{
+      // 	"Golang": MatchAllFields(Fields{
+      // 		"TopicCount":       BeNumerically("==", 1),
+      // 		"ReplyCount":       BeNumerically("==", 1),
+      // 		"LastPostUsername": PointTo(Not(BeEmpty())),
+      // 		"LastPostTime":     Not(BeNil()),
+      // 	}),
+      // 	"NodeJS": MatchAllFields(Fields{
+      // 		"TopicCount":       BeNumerically("==", 1),
+      // 		"ReplyCount":       BeNumerically("==", 1),
+      // 		"LastPostUsername": PointTo(Not(BeEmpty())),
+      // 		"LastPostTime":     Not(BeNil()),
+      // 	}),
+      // }))
+      expect(res.body).toMatchObject({
+        golang: {
+          topicCount: 1,
+          replyCount: 1,
+          lastPostUsername: "test001",
+          lastPostTime: expect.any(String)
+        },
+        nodeJS: {
+          topicCount: 1,
+          replyCount: 1,
+          lastPostUsername: "test001",
+          lastPostTime: expect.any(String)
+        }
       });
     });
   });
