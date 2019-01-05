@@ -1,6 +1,7 @@
 const express = require("express");
 const adminRouter = require("./route/admin");
 const authRouter = require("./route/auth");
+const forumRouter = require("./route/forum");
 
 const app = express();
 
@@ -10,5 +11,6 @@ const app = express();
 app.use(express.json());
 app.use("/api/admin", adminRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/forum", forumRouter);
 
 module.exports = app;
