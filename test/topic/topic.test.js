@@ -71,21 +71,6 @@ describe("Topic Handler", () => {
       const res = await request(server).get("/api/topics/statistics");
       console.log("res.body", res.body);
       expect(res.status).toBe(200);
-
-      // Expect(result).To(MatchAllFields(Fields{
-      // 	"Golang": MatchAllFields(Fields{
-      // 		"TopicCount":       BeNumerically("==", 1),
-      // 		"ReplyCount":       BeNumerically("==", 1),
-      // 		"LastPostUsername": PointTo(Not(BeEmpty())),
-      // 		"LastPostTime":     Not(BeNil()),
-      // 	}),
-      // 	"NodeJS": MatchAllFields(Fields{
-      // 		"TopicCount":       BeNumerically("==", 1),
-      // 		"ReplyCount":       BeNumerically("==", 1),
-      // 		"LastPostUsername": PointTo(Not(BeEmpty())),
-      // 		"LastPostTime":     Not(BeNil()),
-      // 	}),
-      // }))
       expect(res.body).toMatchObject({
         golang: {
           topicCount: 1,
@@ -99,6 +84,20 @@ describe("Topic Handler", () => {
           lastPostUsername: "test001",
           lastPostTime: expect.any(String)
         }
+      });
+    });
+  });
+
+  describe("Find topics", () => {
+    it("should find successfully", async () => {
+      const res = await request(server)
+        .get("/api/topics/golang")
+        .query({ offset: 0, limit: 10 });
+      console.log("res.body", res.body);
+      expect(res.status).toBe(200);
+      expect(res.body).toMatchObject({
+        topics: expect.any(Array),
+        totalCount: 1
       });
     });
   });

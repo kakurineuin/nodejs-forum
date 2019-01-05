@@ -4,6 +4,9 @@ const AdminService = require("../service/admin");
 const adminService = new AdminService();
 const router = express.Router();
 
+/**
+ * 查詢使用者。
+ */
 router.get("/users", async (req, res) => {
   const result = await adminService.findUsers(
     req.query.searchUser,
@@ -16,6 +19,9 @@ router.get("/users", async (req, res) => {
   });
 });
 
+/**
+ * 停用使用者。
+ */
 router.post("/users/disable/:id", async (req, res) => {
   const userProfile = await adminService.disableUser(req.params.id);
   res.status(200).json({

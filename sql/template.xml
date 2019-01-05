@@ -54,7 +54,7 @@
   </Sql>
   <Sql name="FindTopicsTotalCount">
     select
-      count(*)
+      count(*) as totalCount
     from
       %v p
       inner join user_profile u

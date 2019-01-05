@@ -27,6 +27,46 @@ class TopicService {
       nodeJSStatistics: nodeJSStatistics[0]
     };
   }
+
+  /**
+   * 查詢主題列表。
+   *
+   * @param {string} category
+   * @param {string} searchTopic
+   * @param {number} offset
+   * @param {number} limit
+   */
+  async findTopics(category, searchTopic, offset, limit) {
+    const table = getTable(category);
+    searchTopic = "%" + searchTopic + "%";
+    let statement = sqlTemplate["FindTopics"].replace(/%v/g, table);
+    const topics = await sequelize.query(statement, {
+      replacements: [searchTopic, offset, limit],
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    // 查詢總筆數。
+    statement = sqlTemplate["FindTopicsTotalCount"].replace(/%v/g, table);
+    const result = await sequelize.query(statement, {
+      replacements: [searchTopic],
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    return {
+      topics: topics,
+      totalCount: result[0].totalCount
+    };
+  }
 }
 
+function getTable(category) {
+  switch (category) {
+    case "golang":
+      return "post_golang";
+    case "nodejs":
+      return "post_nodejs";
+    default:
+      throw new Error("category is error");
+  }
+}
 module.exports = TopicService;
