@@ -67,6 +67,11 @@ describe("Forum Handler", () => {
       const res = await request(server).get("/api/forum/statistics");
       console.log("res.body", res.body);
       expect(res.status).toBe(200);
+      expect(res.body.forumStatistics).toMatchObject({
+        topicCount: expect.any(Number),
+        replyCount: expect.any(Number),
+        userCount: expect.any(Number)
+      });
     });
   });
 });
