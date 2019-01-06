@@ -53,7 +53,36 @@ class TopicService {
     });
 
     return {
-      topics: topics,
+      topics,
+      totalCount: result[0].totalCount
+    };
+  }
+
+  /**
+   * 查詢某個主題的討論文章。
+   *
+   * @param {string} category
+   * @param {number} id
+   * @param {number} offset
+   * @param {number} limit
+   */
+  async findTopic(category, id, offset, limit) {
+    const table = getTable(category);
+    let statement = sqlTemplate["FindTopic"].replace(/%v/g, table);
+    const posts = await sequelize.query(statement, {
+      replacements: [id, id, offset, limit],
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    // 查詢總筆數。
+    statement = sqlTemplate["FindTopicTotalCount"].replace(/%v/g, table);
+    const result = await sequelize.query(statement, {
+      replacements: [id, id],
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    return {
+      posts,
       totalCount: result[0].totalCount
     };
   }

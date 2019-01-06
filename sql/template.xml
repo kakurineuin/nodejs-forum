@@ -83,7 +83,7 @@
   </Sql>
   <Sql name="FindTopicTotalCount">
     select
-  		count(*)
+  		count(*) as totalCount
   	from (
   		select
   			p.id

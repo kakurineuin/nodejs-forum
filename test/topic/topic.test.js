@@ -101,4 +101,21 @@ describe("Topic Handler", () => {
       });
     });
   });
+
+  describe("Find topic", () => {
+    it("should find successfully", async () => {
+      const res = await request(server)
+        .get("/api/topics/golang/" + postGolang.ID)
+        .query({
+          offset: 0,
+          limit: 10
+        });
+      console.log("res.body", res.body);
+      expect(res.status).toBe(200);
+      expect(res.body).toMatchObject({
+        posts: expect.any(Array),
+        totalCount: 2
+      });
+    });
+  });
 });
