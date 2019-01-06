@@ -118,4 +118,28 @@ describe("Topic Handler", () => {
       });
     });
   });
+
+  describe("Create post", () => {
+    it("should create successfully", async () => {
+      const requestJSON = {
+        userProfileID: 1,
+        topic: "測試新增文章",
+        content: "測試新增文章"
+      };
+      const res = await request(server)
+        .post("/api/topics/golang")
+        .set("Content-Type", "application/json")
+        .send(requestJSON);
+      console.log("res.body", res.body);
+      expect(res.status).toBe(201);
+      expect(res.body.post).toMatchObject({
+        ID: expect.any(Number),
+        userProfileID: 1,
+        topic: "測試新增文章",
+        content: "測試新增文章",
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String)
+      });
+    });
+  });
 });

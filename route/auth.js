@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { myJoi, validate } = require("../validate/joi_options");
 const Joi = require("joi");
+const { myJoi, validate } = require("../validate/joi_options");
 const AuthService = require("../service/auth");
 
 // JWT secret key。

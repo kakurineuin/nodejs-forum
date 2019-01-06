@@ -1,4 +1,6 @@
 const sequelize = require("../database/database");
+const PostGolang = require("../model/post_golang");
+const PostNodejs = require("../model/post_nodejs");
 const sqlTemplate = require("../sql/read_template");
 
 /**
@@ -85,6 +87,30 @@ class TopicService {
       posts,
       totalCount: result[0].totalCount
     };
+  }
+
+  /**
+   * 新增文章。
+   *
+   * @param {string} category
+   * @param {Object} post
+   */
+  async createPost(category, post) {
+    let createdPost = null;
+    switch (category) {
+      case "golang":
+        createdPost = await PostGolang.create(post);
+        return createdPost.get({
+          plain: true
+        });
+      case "nodejs":
+        createdPost = await PostNodejs.create(post);
+        return createdPost.get({
+          plain: true
+        });
+      default:
+        throw new Error("category is error");
+    }
   }
 }
 

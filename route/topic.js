@@ -1,4 +1,6 @@
 const express = require("express");
+const Joi = require("joi");
+const { myJoi, validate } = require("../validate/joi_options");
 const TopicService = require("../service/topic");
 
 const topicService = new TopicService();
@@ -47,6 +49,39 @@ router.get("/:category/:id", async (req, res) => {
   res.status(200).json({
     posts: result.posts,
     totalCount: result.totalCount
+  });
+});
+
+/**
+ * 新增文章。
+ */
+router.post("/:category", async (req, res) => {
+  const schema = myJoi.keys({
+    userProfileID: Joi.number().required(),
+    topic: Joi.string()
+      .min(1)
+      .max(30)
+      .required()
+      .label("主題"),
+    content: Joi.string()
+      .min(1)
+      .max(500)
+      .required()
+      .label("內文")
+  });
+  const message = validate(req.body, schema);
+
+  if (message) {
+    return res.status(400).json({
+      message
+    });
+  }
+
+  const category = req.params.category;
+  const post = await topicService.createPost(category, req.body);
+  res.status(201).json({
+    message: post.replyPostID ? "回覆成功。" : "新增主題成功。",
+    post
   });
 });
 
