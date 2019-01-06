@@ -5,7 +5,7 @@ const app = require("../../app");
 
 describe("Admin Handler", () => {
   let server = null;
-  let userID = null;
+  let userId = null;
 
   beforeAll(async () => {
     await sequelize.sync();
@@ -29,7 +29,7 @@ describe("Admin Handler", () => {
       });
 
       if (i === 4) {
-        userID = userProfile.ID;
+        userId = userProfile.id;
       }
     }
   });
@@ -53,7 +53,7 @@ describe("Admin Handler", () => {
   describe("Disable users", () => {
     it("should disable user successfully", async () => {
       const res = await request(server).post(
-        "/api/admin/users/disable/" + userID
+        "/api/admin/users/disable/" + userId
       );
       console.log("res.body", res.body);
       expect(res.status).toBe(200);

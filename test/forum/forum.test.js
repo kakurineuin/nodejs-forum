@@ -6,7 +6,7 @@ const PostNodejs = require("../../model/post_nodejs");
 const app = require("../../app");
 
 describe("Forum Handler", () => {
-  let userProfileID = null;
+  let userProfileId = null;
   let postGolang = null;
   let server = null;
 
@@ -27,34 +27,34 @@ describe("Forum Handler", () => {
       password: "$2a$10$041tGlbd86T90uNSGbvkw.tSExCrlKmy37QoUGl23mfW7YGJjUVjO",
       role: "user"
     });
-    userProfileID = userProfile.ID;
+    userProfileId = userProfile.id;
 
     // 新增 post_golang 主題。
     postGolang = await PostGolang.create({
-      userProfileID,
+      userProfileId,
       topic: "測試主題001",
       content: "內容..."
     });
 
     // 新增 post_golang 回覆。
     await PostGolang.create({
-      userProfileID,
-      replyPostID: postGolang.ID,
+      userProfileId,
+      replyPostId: postGolang.id,
       topic: postGolang.topic,
       content: "這是回覆。"
     });
 
     // 新增 post_nodejs 主題。
     const postNodejs = await PostNodejs.create({
-      userProfileID,
+      userProfileId,
       topic: "測試主題001",
       content: "內容..."
     });
 
     // 新增 post_nodejs 回覆。
     await PostNodejs.create({
-      userProfileID,
-      replyPostID: postNodejs.ID,
+      userProfileId,
+      replyPostId: postNodejs.id,
       topic: postNodejs.topic,
       content: "這是回覆。"
     });

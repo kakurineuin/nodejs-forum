@@ -94,7 +94,7 @@ function createToken(userProfile) {
   const exp = Math.floor(Date.now() / 1000) + 60 * 60 * JWT_EXP_HOURS;
   const token = jwt.sign(
     {
-      id: userProfile.ID,
+      id: userProfile.id,
       username: userProfile.username,
       email: userProfile.email,
       role: userProfile.role,

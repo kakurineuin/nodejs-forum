@@ -57,7 +57,7 @@ router.get("/:category/:id", async (req, res) => {
  */
 router.post("/:category", async (req, res) => {
   const schema = myJoi.keys({
-    userProfileID: Joi.number().required(),
+    userProfileId: Joi.number().required(),
     topic: Joi.string()
       .min(1)
       .max(30)
@@ -80,7 +80,7 @@ router.post("/:category", async (req, res) => {
   const category = req.params.category;
   const post = await topicService.createPost(category, req.body);
   res.status(201).json({
-    message: post.replyPostID ? "回覆成功。" : "新增主題成功。",
+    message: post.replyPostId ? "回覆成功。" : "新增主題成功。",
     post
   });
 });

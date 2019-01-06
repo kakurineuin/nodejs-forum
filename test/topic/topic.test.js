@@ -6,7 +6,7 @@ const PostNodejs = require("../../model/post_nodejs");
 const app = require("../../app");
 
 describe("Topic Handler", () => {
-  let userProfileID = null;
+  let userProfileId = null;
   let postGolang = null;
   let server = null;
 
@@ -27,34 +27,34 @@ describe("Topic Handler", () => {
       password: "$2a$10$041tGlbd86T90uNSGbvkw.tSExCrlKmy37QoUGl23mfW7YGJjUVjO",
       role: "user"
     });
-    userProfileID = userProfile.ID;
+    userProfileId = userProfile.id;
 
     // 新增 post_golang 主題。
     postGolang = await PostGolang.create({
-      userProfileID,
+      userProfileId,
       topic: "測試主題001",
       content: "內容..."
     });
 
     // 新增 post_golang 回覆。
     await PostGolang.create({
-      userProfileID,
-      replyPostID: postGolang.ID,
+      userProfileId,
+      replyPostId: postGolang.id,
       topic: postGolang.topic,
       content: "這是回覆。"
     });
 
     // 新增 post_nodejs 主題。
     const postNodejs = await PostNodejs.create({
-      userProfileID,
+      userProfileId,
       topic: "測試主題001",
       content: "內容..."
     });
 
     // 新增 post_nodejs 回覆。
     await PostNodejs.create({
-      userProfileID,
-      replyPostID: postNodejs.ID,
+      userProfileId,
+      replyPostId: postNodejs.id,
       topic: postNodejs.topic,
       content: "這是回覆。"
     });
@@ -105,7 +105,7 @@ describe("Topic Handler", () => {
   describe("Find topic", () => {
     it("should find successfully", async () => {
       const res = await request(server)
-        .get("/api/topics/golang/" + postGolang.ID)
+        .get("/api/topics/golang/" + postGolang.id)
         .query({
           offset: 0,
           limit: 10
@@ -122,7 +122,7 @@ describe("Topic Handler", () => {
   describe("Create post", () => {
     it("should create successfully", async () => {
       const requestJSON = {
-        userProfileID: 1,
+        userProfileId: 1,
         topic: "測試新增文章",
         content: "測試新增文章"
       };
@@ -133,8 +133,8 @@ describe("Topic Handler", () => {
       console.log("res.body", res.body);
       expect(res.status).toBe(201);
       expect(res.body.post).toMatchObject({
-        ID: expect.any(Number),
-        userProfileID: 1,
+        id: expect.any(Number),
+        userProfileId: 1,
         topic: "測試新增文章",
         content: "測試新增文章",
         createdAt: expect.any(String),

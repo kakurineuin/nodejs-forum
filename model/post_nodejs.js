@@ -4,18 +4,18 @@ const sequelize = require("../database/database");
 const PostNodejs = sequelize.define(
   "postNodejs",
   {
-    ID: {
+    id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true
     },
-    userProfileID: {
+    userProfileId: {
       type: Sequelize.INTEGER,
       allowNull: false,
       field: "user_profile_id"
     },
-    replyPostID: {
+    replyPostId: {
       type: Sequelize.INTEGER,
       allowNull: true,
       field: "reply_post_id"
