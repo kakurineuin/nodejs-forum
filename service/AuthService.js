@@ -1,7 +1,6 @@
-const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
 const UserProfile = require("../model/user_profile");
-const CustomError = require("../error/error");
+const CustomError = require("../error/CustomError");
 
 const ROLE_USER = "user"; // 角色：一般使用者。
 

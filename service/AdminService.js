@@ -36,12 +36,7 @@ class AdminService {
       };
     }
 
-    try {
-      return await UserProfile.findAndCountAll(options);
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+    return await UserProfile.findAndCountAll(options);
   }
 
   /**
@@ -50,24 +45,12 @@ class AdminService {
    * @param {number} id
    */
   async disableUser(id) {
-    try {
-      const userProfie = await UserProfile.findByPk(id);
-      userProfie.isDisabled = 1;
-      await userProfie.save();
-      return await UserProfile.findByPk(id, {
-        attributes: [
-          "id",
-          "username",
-          "email",
-          "role",
-          "isDisabled",
-          "createdAt"
-        ]
-      });
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+    const userProfie = await UserProfile.findByPk(id);
+    userProfie.isDisabled = 1;
+    await userProfie.save();
+    return await UserProfile.findByPk(id, {
+      attributes: ["id", "username", "email", "role", "isDisabled", "createdAt"]
+    });
   }
 }
 

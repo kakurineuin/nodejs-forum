@@ -3,5 +3,6 @@
     "user": "forum_admin",
     "password": "test123",
     "dbname": "forum_test"
-  }
+  },
+  "jwtSecret": "die_meere"
 }

@@ -1,6 +1,7 @@
 const request = require("supertest");
 const sequelize = require("../../database/database");
 const UserProfile = require("../../model/user_profile");
+const createToken = require("../createToken");
 const app = require("../../app");
 
 describe("Admin Handler", () => {
@@ -42,6 +43,7 @@ describe("Admin Handler", () => {
     it("should find successfully", async () => {
       const res = await request(server)
         .get("/api/admin/users")
+        .set("Authorization", "Bearer " + createToken(1))
         .query({ offset: 0, limit: 10 });
       console.log("res.body", res.body);
       expect(res.status).toBe(200);
@@ -52,9 +54,9 @@ describe("Admin Handler", () => {
 
   describe("Disable users", () => {
     it("should disable user successfully", async () => {
-      const res = await request(server).post(
-        "/api/admin/users/disable/" + userId
-      );
+      const res = await request(server)
+        .post("/api/admin/users/disable/" + userId)
+        .set("Authorization", "Bearer " + createToken(1));
       console.log("res.body", res.body);
       expect(res.status).toBe(200);
       expect(res.body.user).toMatchObject({

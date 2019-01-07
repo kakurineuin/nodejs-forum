@@ -1,4 +1,5 @@
 const express = require("express");
+const jwtMiddleware = require("../middleware/jwt");
 const Joi = require("joi");
 const { myJoi, validate } = require("../validate/joi_options");
 const TopicService = require("../service/TopicService");
@@ -55,7 +56,7 @@ router.get("/:category/:id", async (req, res) => {
 /**
  * 新增文章。
  */
-router.post("/:category", async (req, res) => {
+router.post("/:category", jwtMiddleware, async (req, res) => {
   const schema = myJoi.keys({
     userProfileId: Joi.number().required(),
     topic: Joi.string()
@@ -82,6 +83,34 @@ router.post("/:category", async (req, res) => {
   res.status(201).json({
     message: post.replyPostId ? "回覆成功。" : "新增主題成功。",
     post
+  });
+});
+
+/**
+ * 修改文章。
+ */
+router.put("/:category/:id", jwtMiddleware, async (req, res) => {
+  const schema = myJoi.keys({
+    content: Joi.string()
+      .min(1)
+      .max(500)
+      .required()
+      .label("內文")
+  });
+  const message = validate(req.body, schema);
+
+  if (message) {
+    return res.status(400).json({
+      message
+    });
+  }
+
+  const category = req.params.category;
+  const id = parseInt(req.params.id, 10);
+  const post = await topicService.updatePost(category, id, req.body, req.user);
+  res.status(200).json({
+    message: "修改文章成功。",
+    post: post
   });
 });
 

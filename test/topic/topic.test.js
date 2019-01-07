@@ -3,6 +3,7 @@ const sequelize = require("../../database/database");
 const UserProfile = require("../../model/user_profile");
 const PostGolang = require("../../model/post_golang");
 const PostNodejs = require("../../model/post_nodejs");
+const createToken = require("../createToken");
 const app = require("../../app");
 
 describe("Topic Handler", () => {
@@ -122,24 +123,74 @@ describe("Topic Handler", () => {
   describe("Create post", () => {
     it("should create successfully", async () => {
       const requestJSON = {
-        userProfileId: 1,
+        userProfileId,
         topic: "測試新增文章",
         content: "測試新增文章"
       };
       const res = await request(server)
         .post("/api/topics/golang")
+        .set("Authorization", "Bearer " + createToken(userProfileId))
         .set("Content-Type", "application/json")
         .send(requestJSON);
       console.log("res.body", res.body);
       expect(res.status).toBe(201);
       expect(res.body.post).toMatchObject({
         id: expect.any(Number),
-        userProfileId: 1,
+        userProfileId,
         topic: "測試新增文章",
         content: "測試新增文章",
         createdAt: expect.any(String),
         updatedAt: expect.any(String)
       });
+    });
+  });
+
+  describe("Update post", () => {
+    it("should update successfully", async () => {
+      const requestJSON = {
+        content: "測試修改文章"
+      };
+      const res = await request(server)
+        .put("/api/topics/golang/" + postGolang.id)
+        .set("Authorization", "Bearer " + createToken(userProfileId))
+        .set("Content-Type", "application/json")
+        .send(requestJSON);
+      console.log("res.body", res.body);
+      expect(res.status).toBe(200);
+      expect(res.body.post).toMatchObject({
+        id: postGolang.id,
+        userProfileId,
+        topic: postGolang.topic,
+        content: requestJSON.content,
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String)
+      });
+
+      // c.Set("user", createToken(userProfileId))
+      // err := topicHandler.UpdatePost(c)
+
+      // Expect(err).To(BeNil())
+      // Expect(rec.Code).To(Equal(http.StatusOK))
+
+      // recBody := rec.Body.String()
+      // var result struct {
+      // 	Post model.Post `json:"post"`
+      // }
+      // err = json.Unmarshal([]byte(recBody), &result)
+
+      // Expect(err).To(BeNil())
+      // Expect(result).To(MatchAllFields(Fields{
+      // 	"Post": MatchAllFields(Fields{
+      // 		"Id":            PointTo(BeNumerically("==", *postGolang.Id)),
+      // 		"UserProfileId": PointTo(BeNumerically("==", *postGolang.UserProfileId)),
+      // 		"ReplyPostId":   BeNil(),
+      // 		"Topic":         PointTo(Equal(*postGolang.Topic)),
+      // 		"Content":       PointTo(Equal("測試修改文章")),
+      // 		"CreatedAt":     Not(BeNil()),
+      // 		"UpdatedAt":     Not(BeNil()),
+      // 		"DeletedAt":     BeNil(),
+      // 	}),
+      // }))
     });
   });
 });

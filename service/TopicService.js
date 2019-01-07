@@ -1,7 +1,7 @@
+const _ = require("lodash");
 const sequelize = require("../database/database");
-const PostGolang = require("../model/post_golang");
-const PostNodejs = require("../model/post_nodejs");
 const sqlTemplate = require("../sql/read_template");
+const CustomError = require("../error/CustomError");
 
 /**
  * 處理主題相關功能請求的 service。
@@ -96,21 +96,39 @@ class TopicService {
    * @param {Object} post
    */
   async createPost(category, post) {
-    let createdPost = null;
-    switch (category) {
-      case "golang":
-        createdPost = await PostGolang.create(post);
-        return createdPost.get({
-          plain: true
-        });
-      case "nodejs":
-        createdPost = await PostNodejs.create(post);
-        return createdPost.get({
-          plain: true
-        });
-      default:
-        throw new Error("category is error");
+    const model = sequelize.model("post" + _.capitalize(category));
+    const createdPost = await model.create(post);
+    return createdPost.get({
+      plain: true
+    });
+  }
+
+  /**
+   * 修改文章。
+   *
+   * @param {string} category
+   * @param {number} id
+   * @param {Object} post
+   * @param {Object} user
+   */
+  async updatePost(category, id, postOnUpdate, user) {
+    const model = sequelize.model("post" + _.capitalize(category));
+    const post = await model.findByPk(id);
+
+    // 不能修改已刪除的文章。
+    if (post.deletedAt) {
+      throw new CustomError(400, "不能修改已刪除的文章。");
     }
+
+    // 不能修改別人的文章。
+    if (post.userProfileId !== user.id) {
+      throw new CustomError(400, "不能修改別人的文章。");
+    }
+
+    // 修改文章。
+    post.content = postOnUpdate.content;
+    await post.save();
+    return post;
   }
 }
 
@@ -124,4 +142,5 @@ function getTable(category) {
       throw new Error("category is error");
   }
 }
+
 module.exports = TopicService;
