@@ -1,7 +1,7 @@
 const express = require("express");
 const Joi = require("joi");
 const { myJoi, validate } = require("../validate/joi_options");
-const TopicService = require("../service/topic");
+const TopicService = require("../service/TopicService");
 
 const topicService = new TopicService();
 const router = express.Router();

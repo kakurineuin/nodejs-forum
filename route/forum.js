@@ -1,5 +1,5 @@
 const express = require("express");
-const ForumService = require("../service/forum");
+const ForumService = require("../service/ForumService");
 
 const forumService = new ForumService();
 const router = express.Router();

@@ -1,5 +1,5 @@
 const express = require("express");
-const AdminService = require("../service/admin");
+const AdminService = require("../service/AdminService");
 
 const adminService = new AdminService();
 const router = express.Router();
