@@ -38,6 +38,7 @@ describe("Auth Handler", () => {
       console.log("res.body", res.body);
       expect(res.status).toBe(400);
     });
+
     it("should register successfully", async () => {
       const requestJSON = {
         username: "test002",
