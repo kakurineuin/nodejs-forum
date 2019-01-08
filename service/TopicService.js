@@ -128,7 +128,38 @@ class TopicService {
     // 修改文章。
     post.content = postOnUpdate.content;
     await post.save();
-    return post;
+    return post.get({ plain: true });
+  }
+
+  /**
+   * 刪除文章。
+   *
+   * @param {string} category
+   * @param {number} id
+   * @param {Object} user
+   */
+  async deletePost(category, id, user) {
+    const model = sequelize.model("post" + _.capitalize(category));
+    let post = await model.findByPk(id);
+
+    // 不是系統管理員則不能刪除別人的文章。
+    if (user.Role !== "admin" && post.userProfileId !== user.id) {
+      throw new CustomError(400, "不能刪除別人的文章。");
+    }
+
+    // // 不是真的刪除，而是修改文章內容並更新刪除時間欄位。
+    try {
+      await sequelize.transaction(async t => {
+        post.content = "此篇文章已被刪除。";
+        post = await post.save({ transaction: t });
+        await post.destroy({ transaction: t });
+      });
+      post = await model.findByPk(id, { paranoid: false });
+      return post.get({ plain: true });
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   }
 }
 

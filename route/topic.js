@@ -114,4 +114,17 @@ router.put("/:category/:id", jwtMiddleware, async (req, res) => {
   });
 });
 
+/**
+ * 刪除文章。
+ */
+router.delete("/:category/:id", jwtMiddleware, async (req, res) => {
+  const category = req.params.category;
+  const id = parseInt(req.params.id, 10);
+  const post = await topicService.deletePost(category, id, req.user);
+  res.status(200).json({
+    message: "刪除文章成功。",
+    post: post
+  });
+});
+
 module.exports = router;

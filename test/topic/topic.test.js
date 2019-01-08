@@ -63,8 +63,8 @@ describe("Topic Handler", () => {
 
   afterEach(async () => {
     await UserProfile.destroy({ where: {} });
-    await PostGolang.destroy({ where: {} });
-    await PostNodejs.destroy({ where: {} });
+    await PostGolang.destroy({ where: {}, force: true });
+    await PostNodejs.destroy({ where: {}, force: true });
   });
 
   describe("Find topics statistics", () => {
@@ -159,38 +159,31 @@ describe("Topic Handler", () => {
       expect(res.status).toBe(200);
       expect(res.body.post).toMatchObject({
         id: postGolang.id,
-        userProfileId,
+        userProfileId: postGolang.userProfileId,
         topic: postGolang.topic,
         content: requestJSON.content,
         createdAt: expect.any(String),
         updatedAt: expect.any(String)
       });
+    });
+  });
 
-      // c.Set("user", createToken(userProfileId))
-      // err := topicHandler.UpdatePost(c)
-
-      // Expect(err).To(BeNil())
-      // Expect(rec.Code).To(Equal(http.StatusOK))
-
-      // recBody := rec.Body.String()
-      // var result struct {
-      // 	Post model.Post `json:"post"`
-      // }
-      // err = json.Unmarshal([]byte(recBody), &result)
-
-      // Expect(err).To(BeNil())
-      // Expect(result).To(MatchAllFields(Fields{
-      // 	"Post": MatchAllFields(Fields{
-      // 		"Id":            PointTo(BeNumerically("==", *postGolang.Id)),
-      // 		"UserProfileId": PointTo(BeNumerically("==", *postGolang.UserProfileId)),
-      // 		"ReplyPostId":   BeNil(),
-      // 		"Topic":         PointTo(Equal(*postGolang.Topic)),
-      // 		"Content":       PointTo(Equal("測試修改文章")),
-      // 		"CreatedAt":     Not(BeNil()),
-      // 		"UpdatedAt":     Not(BeNil()),
-      // 		"DeletedAt":     BeNil(),
-      // 	}),
-      // }))
+  describe("Delete post", () => {
+    it("should delete successfully", async () => {
+      const res = await request(server)
+        .delete("/api/topics/golang/" + postGolang.id)
+        .set("Authorization", "Bearer " + createToken(userProfileId));
+      console.log("res.body", res.body);
+      expect(res.status).toBe(200);
+      expect(res.body.post).toMatchObject({
+        id: postGolang.id,
+        userProfileId: postGolang.userProfileId,
+        topic: postGolang.topic,
+        content: "此篇文章已被刪除。",
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        deletedAt: expect.any(String)
+      });
     });
   });
 });

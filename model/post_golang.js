@@ -38,10 +38,14 @@ const PostGolang = sequelize.define(
     },
     deletedAt: {
       type: Sequelize.DATE,
+      allowNull: true,
       field: "deleted_at"
     }
   },
-  { tableName: "post_golang" }
+  {
+    tableName: "post_golang",
+    paranoid: true
+  }
 );
 
 module.exports = PostGolang;

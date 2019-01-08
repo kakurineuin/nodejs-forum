@@ -41,7 +41,10 @@ const PostNodejs = sequelize.define(
       field: "deleted_at"
     }
   },
-  { tableName: "post_nodejs" }
+  {
+    tableName: "post_nodejs",
+    paranoid: true
+  }
 );
 
 module.exports = PostNodejs;

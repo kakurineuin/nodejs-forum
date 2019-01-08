@@ -62,8 +62,8 @@ describe("Forum Handler", () => {
 
   afterEach(async () => {
     await UserProfile.destroy({ where: {} });
-    await PostGolang.destroy({ where: {} });
-    await PostNodejs.destroy({ where: {} });
+    await PostGolang.destroy({ where: {}, force: true });
+    await PostNodejs.destroy({ where: {}, force: true });
   });
 
   describe("Find forum statistics", () => {
