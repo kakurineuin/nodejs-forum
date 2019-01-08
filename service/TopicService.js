@@ -147,7 +147,7 @@ class TopicService {
       throw new CustomError(400, "不能刪除別人的文章。");
     }
 
-    // // 不是真的刪除，而是修改文章內容並更新刪除時間欄位。
+    // 不是真的刪除，而是修改文章內容並更新刪除時間欄位。
     try {
       await sequelize.transaction(async t => {
         post.content = "此篇文章已被刪除。";
