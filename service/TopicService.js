@@ -2,6 +2,7 @@ const _ = require("lodash");
 const sequelize = require("../database/database");
 const sqlTemplate = require("../sql/read_template");
 const CustomError = require("../error/CustomError");
+const logger = require("../logger/logger");
 
 /**
  * 處理主題相關功能請求的 service。
@@ -17,7 +18,7 @@ class TopicService {
         type: sequelize.QueryTypes.SELECT
       }
     );
-    console.log("============= golangStatistics", golangStatistics);
+    logger.info("============= golangStatistics", golangStatistics);
     const nodeJSStatistics = await sequelize.query(
       sqlTemplate["FindTopicsNodeJSStatistics"],
       {
@@ -148,18 +149,13 @@ class TopicService {
     }
 
     // 不是真的刪除，而是修改文章內容並更新刪除時間欄位。
-    try {
-      await sequelize.transaction(async t => {
-        post.content = "此篇文章已被刪除。";
-        post = await post.save({ transaction: t });
-        await post.destroy({ transaction: t });
-      });
-      post = await model.findByPk(id, { paranoid: false });
-      return post.get({ plain: true });
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+    await sequelize.transaction(async t => {
+      post.content = "此篇文章已被刪除。";
+      post = await post.save({ transaction: t });
+      await post.destroy({ transaction: t });
+    });
+    post = await model.findByPk(id, { paranoid: false });
+    return post.get({ plain: true });
   }
 }
 

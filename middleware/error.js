@@ -1,11 +1,11 @@
 const CustomError = require("../error/CustomError");
+const logger = require("../logger/logger");
 
 /**
  * 錯誤處理 middleware。
  */
 module.exports = function(err, req, res, next) {
-  // TODO: 使用日誌套件記錄錯誤訊息。
-  console.log("======= error =======", error);
+  logger.error(err.message, err);
 
   if (err instanceof CustomError) {
     res.status(err.httpStatusCode).json({

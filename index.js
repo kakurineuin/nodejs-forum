@@ -1,12 +1,15 @@
 const sequelize = require("./database/database");
+const logger = require("./logger/logger");
 const app = require("./app");
 
 sequelize
   .sync()
   .then(result => {
-    console.log("sequelize sync result", result);
-    app.listen(3000);
+    logger.info("sequelize sync result", result);
+    app.listen(3000, () => {
+      logger.info("server is listening...");
+    });
   })
   .catch(err => {
-    console.log(err);
+    logger.error(err.message, err);
   });
