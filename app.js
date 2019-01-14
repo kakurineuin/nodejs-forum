@@ -10,8 +10,6 @@ const errorMiddleware = require("./middleware/error");
 
 const app = express();
 
-// TODO: 參考 main.go 加上其他共用的 middleware。
-
 app.use(express.json());
 app.use("/api/admin", jwtMiddleware, adminMiddleware, adminRouter);
 app.use("/api/auth", authRouter);
