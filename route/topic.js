@@ -58,6 +58,7 @@ router.get("/:category/:id", async (req, res) => {
  */
 router.post("/:category", jwtMiddleware, async (req, res) => {
   const schema = myJoi.keys({
+    replyPostId: Joi.number().optional(),
     userProfileId: Joi.number().required(),
     topic: Joi.string()
       .min(1)

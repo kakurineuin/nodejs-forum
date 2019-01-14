@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "cross-env NODE_ENV=test jest --watchAll --runInBand"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/frontend/"
+    ]
   },
   "keywords": [],
   "author": "",

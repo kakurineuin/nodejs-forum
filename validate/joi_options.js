@@ -4,11 +4,12 @@ module.exports.myJoi = Joi.object().options({
   abortEarly: false,
   language: {
     any: {
-      required: "必填。"
+      required: "必填。",
+      empty: "不允許為空。"
     },
     string: {
       alphanum: "只能英文字母或數字。",
-      min: "長度必須至少為{{lmit}}個字。",
+      min: "長度必須至少為{{limit}}個字。",
       max: "長度必須小於或等於{{limit}}個字。",
       email: "email格式不正確。"
     }

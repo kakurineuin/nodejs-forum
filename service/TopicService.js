@@ -3,6 +3,8 @@ const sequelize = require("../database/database");
 const sqlTemplate = require("../sql/read_template");
 const CustomError = require("../error/CustomError");
 const logger = require("../logger/logger");
+const PostGolang = require("../model/post_golang");
+const PostNodejs = require("../model/post_nodejs");
 
 /**
  * 處理主題相關功能請求的 service。
