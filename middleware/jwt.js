@@ -3,4 +3,4 @@ const config = require("config");
 
 const JWT_SECRET = config.get("jwtSecret");
 
-module.exports = expressJwt({ secret: JWT_SECRET });
+module.exports = expressJwt({ secret: JWT_SECRET, credentialsRequired: false });
