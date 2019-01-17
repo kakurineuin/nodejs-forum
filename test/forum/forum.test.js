@@ -1,8 +1,8 @@
 const request = require("supertest");
 const sequelize = require("../../database/database");
-const UserProfile = require("../../model/user_profile");
-const PostGolang = require("../../model/post_golang");
-const PostNodejs = require("../../model/post_nodejs");
+const UserProfile = require("../../model/userProfile");
+const PostGolang = require("../../model/postGolang");
+const PostNodejs = require("../../model/postNodejs");
 const app = require("../../app");
 
 describe("Forum Handler", () => {

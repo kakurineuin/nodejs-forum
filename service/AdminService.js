@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const UserProfile = require("../model/user_profile");
+const UserProfile = require("../model/userProfile");
 
 const op = Sequelize.Op;
 

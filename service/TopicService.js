@@ -1,10 +1,10 @@
 const _ = require("lodash");
 const sequelize = require("../database/database");
-const sqlTemplate = require("../sql/read_template");
+const sqlTemplate = require("../sql/readTemplate");
 const CustomError = require("../error/CustomError");
 const logger = require("../logger/logger");
-const PostGolang = require("../model/post_golang");
-const PostNodejs = require("../model/post_nodejs");
+const PostGolang = require("../model/postGolang");
+const PostNodejs = require("../model/postNodejs");
 
 /**
  * 處理主題相關功能請求的 service。

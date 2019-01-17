@@ -1,6 +1,6 @@
 const request = require("supertest");
 const sequelize = require("../../database/database");
-const UserProfile = require("../../model/user_profile");
+const UserProfile = require("../../model/userProfile");
 const app = require("../../app");
 
 describe("Auth Handler", () => {

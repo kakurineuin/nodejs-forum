@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const UserProfile = require("../model/user_profile");
+const UserProfile = require("../model/userProfile");
 const CustomError = require("../error/CustomError");
 
 const ROLE_USER = "user"; // 角色：一般使用者。

@@ -1,5 +1,5 @@
 const sequelize = require("../database/database");
-const sqlTemplate = require("../sql/read_template");
+const sqlTemplate = require("../sql/readTemplate");
 
 /**
  * 處理論壇相關功能請求的 service。

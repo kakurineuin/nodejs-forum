@@ -1,7 +1,7 @@
 const express = require("express");
 const jwtMiddleware = require("../middleware/jwt");
 const Joi = require("joi");
-const { myJoi, validate } = require("../validate/joi_options");
+const { myJoi, validate } = require("../validate/joiOptions");
 const TopicService = require("../service/TopicService");
 
 const topicService = new TopicService();
