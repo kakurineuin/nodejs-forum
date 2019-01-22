@@ -67,7 +67,7 @@ router.post("/:category", jwtMiddleware, async (req, res) => {
       .label("主題"),
     content: Joi.string()
       .min(1)
-      .max(2000)
+      .max(20000)
       .required()
       .label("內文")
   });
@@ -94,7 +94,7 @@ router.put("/:category/:id", jwtMiddleware, async (req, res) => {
   const schema = myJoi.keys({
     content: Joi.string()
       .min(1)
-      .max(2000)
+      .max(20000)
       .required()
       .label("內文")
   });
