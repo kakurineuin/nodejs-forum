@@ -1,4 +1,16 @@
-使用 NodeJS、Express、React 建立的論壇網站。
+使用 NodeJS、Express、Sequelize、React 建立的論壇網站。
+
+NodeJS
+https://nodejs.org/en/
+
+Express
+https://expressjs.com
+
+Sequelize
+http://docs.sequelizejs.com
+
+React
+https://reactjs.org
 
 目錄與檔案說明
 ===
