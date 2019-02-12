@@ -5,7 +5,7 @@
 - config：專案配置檔的目錄。
 - database：初始化 Sequelize(ORM Framework)的程式碼目錄。
 - error：自訂錯誤的程式碼目錄。
-- frontend：前端程式碼的目錄，前端使用 React 與 Bulma(CSS framework)開發。
+- frontend：前端程式碼的目錄，前端使用 React 開發。
 - logger：初始化日誌物件的程式碼目錄。
 - middleware：Express 的 middleware 目錄。
 - model：Sequelize 的 model 目錄，每個 model 對應一張資料表。
