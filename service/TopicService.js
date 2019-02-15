@@ -20,16 +20,15 @@ class TopicService {
         type: sequelize.QueryTypes.SELECT
       }
     );
+    golangStatistics = golangStatistics[0];
 
     if (!golangStatistics) {
-      golangStatistics = [
-        {
-          topicCount: 0,
-          replyCount: 0,
-          lastPostUsername: null,
-          lastPostTime: null
-        }
-      ];
+      golangStatistics = {
+        topicCount: 0,
+        replyCount: 0,
+        lastPostUsername: null,
+        lastPostTime: null
+      };
     }
 
     logger.info("============= golangStatistics", golangStatistics);
@@ -40,23 +39,22 @@ class TopicService {
         type: sequelize.QueryTypes.SELECT
       }
     );
+    nodeJSStatistics = nodeJSStatistics[0];
 
     if (!nodeJSStatistics) {
-      nodeJSStatistics = [
-        {
-          topicCount: 0,
-          replyCount: 0,
-          lastPostUsername: null,
-          lastPostTime: null
-        }
-      ];
+      nodeJSStatistics = {
+        topicCount: 0,
+        replyCount: 0,
+        lastPostUsername: null,
+        lastPostTime: null
+      };
     }
 
     logger.info("============= nodeJSStatistics", nodeJSStatistics);
 
     return {
-      golangStatistics: golangStatistics[0],
-      nodeJSStatistics: nodeJSStatistics[0]
+      golangStatistics,
+      nodeJSStatistics
     };
   }
 
