@@ -9,7 +9,7 @@ const AuthService = require("../service/AuthService");
 const JWT_SECRET = config.get("jwtSecret");
 
 // JWT 幾小時後過期。
-const JWT_EXP_HOURS = 72;
+const JWT_EXP_HOURS = 720;
 const authService = new AuthService();
 const router = express.Router();
 
