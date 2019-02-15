@@ -14,19 +14,46 @@ class TopicService {
    * 查詢主題統計資料。
    */
   async findTopicsStatistics() {
-    const golangStatistics = await sequelize.query(
+    let golangStatistics = await sequelize.query(
       sqlTemplate["FindTopicsGolangStatistics"],
       {
         type: sequelize.QueryTypes.SELECT
       }
     );
+
+    if (!golangStatistics) {
+      golangStatistics = [
+        {
+          topicCount: 0,
+          replyCount: 0,
+          lastPostUsername: null,
+          lastPostTime: null
+        }
+      ];
+    }
+
     logger.info("============= golangStatistics", golangStatistics);
-    const nodeJSStatistics = await sequelize.query(
+
+    let nodeJSStatistics = await sequelize.query(
       sqlTemplate["FindTopicsNodeJSStatistics"],
       {
         type: sequelize.QueryTypes.SELECT
       }
     );
+
+    if (!nodeJSStatistics) {
+      nodeJSStatistics = [
+        {
+          topicCount: 0,
+          replyCount: 0,
+          lastPostUsername: null,
+          lastPostTime: null
+        }
+      ];
+    }
+
+    logger.info("============= nodeJSStatistics", nodeJSStatistics);
+
     return {
       golangStatistics: golangStatistics[0],
       nodeJSStatistics: nodeJSStatistics[0]
