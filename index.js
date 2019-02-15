@@ -1,15 +1,15 @@
+const winston = require("winston");
 const sequelize = require("./database/database");
 const logger = require("./logger/logger");
 const app = require("./app");
 
-process.on("uncaughtException", err => {
-  logger.error(err.message, err);
-  process.exit(1);
-});
+winston.exceptions.handle(
+  new winston.transports.Console({ colorize: true, prettyPrint: true }),
+  new winston.transports.File({ filename: "uncaughtExceptions.log" })
+);
 
 process.on("unhandledRejection", err => {
-  logger.error(err.message, err);
-  process.exit(1);
+  throw err;
 });
 
 sequelize
@@ -21,5 +21,5 @@ sequelize
     });
   })
   .catch(err => {
-    logger.error(err.message, err);
+    throw err;
   });
