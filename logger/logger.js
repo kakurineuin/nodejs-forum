@@ -2,7 +2,11 @@ const path = require("path");
 const winston = require("winston");
 require("winston-daily-rotate-file");
 
-var transport = new winston.transports.DailyRotateFile({
+const consoleLogger = new winston.transports.Console({
+  colorize: true,
+  prettyPrint: true
+});
+const dailyRotateFile = new winston.transports.DailyRotateFile({
   filename: "application-%DATE%.log",
   datePattern: "YYYY-MM-DD",
   dirname: path.join(__dirname, "..", "log"),
@@ -12,7 +16,7 @@ var transport = new winston.transports.DailyRotateFile({
 });
 
 const logger = winston.createLogger({
-  transports: [transport]
+  transports: [consoleLogger, dailyRotateFile]
 });
 
 module.exports = logger;
