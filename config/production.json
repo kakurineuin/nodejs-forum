@@ -1,0 +1,8 @@
+{
+  "database": {
+    "user": "forum_admin",
+    "password": "test123",
+    "dbname": "forum"
+  },
+  "jwtSecret": "die_meere"
+}
