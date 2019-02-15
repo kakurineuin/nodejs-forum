@@ -16,7 +16,8 @@ sequelize
   .sync()
   .then(result => {
     logger.info("sequelize sync result", result);
-    app.listen(3000, () => {
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
       logger.info("server is listening...");
     });
   })
