@@ -4,10 +4,10 @@ const config = require("config");
 const database =
   process.env.NODE_ENV === "production"
     ? {
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        host: process.env.DB_HOST,
-        dbname: process.env.DB_NAME
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        host: process.env.DATABASE_HOST,
+        dbname: process.env.DATABASE_NAME
       }
     : config.get("database");
 
