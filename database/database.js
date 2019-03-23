@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const config = require("config");
 
 const database =
-  process.env.NODE_EVN === "production"
+  process.env.NODE_ENV === "production"
     ? {
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
