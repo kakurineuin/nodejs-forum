@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
-const JWT_SECRET = config.get("jwtSecret");
+const JWT_SECRET =
+  process.env.NODE_ENV === "production"
+    ? process.env.JWT_SECRET
+    : config.get("jwtSecret");
 
 /**
  * 產生 JWT。

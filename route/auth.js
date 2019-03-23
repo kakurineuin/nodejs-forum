@@ -6,7 +6,10 @@ const { myJoi, validate } = require("../validate/joiOptions");
 const AuthService = require("../service/AuthService");
 
 // JWT secret key。
-const JWT_SECRET = config.get("jwtSecret");
+const JWT_SECRET =
+  process.env.NODE_ENV === "production"
+    ? process.env.JWT_SECRET
+    : config.get("jwtSecret");
 
 // JWT 幾小時後過期。
 const JWT_EXP_HOURS = 8760;
